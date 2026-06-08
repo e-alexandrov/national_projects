@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Нацпроекты глазами молодёжи | ТюмГУ</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=PT+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -410,19 +411,37 @@ footer {
   .relevance-grid, .methods-grid, .effect-grid { grid-template-columns: 1fr; }
   .results-metrics { grid-template-columns: 1fr 1fr; }
   .section-wrap { padding: 48px 20px; }
-  .home-inner { padding: 60px 20px 48px; }
   nav { padding: 0 12px; height: auto; flex-wrap: wrap; padding: 8px 12px; gap: 6px; }
   .nav-logo { display: none; }
   .nav-links { display: flex; flex-wrap: wrap; gap: 4px; width: 100%; }
   .nav-btn { font-size: 10px; padding: 5px 8px; }
   .page { padding-top: 80px; }
+  .home-inner { padding: 60px 20px 48px; }
 }
+
+/* ─── CHARTS ─── */
+.chart-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 28px 20px;
+  margin-bottom: 24px;
+}
+.chart-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.chart-title { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.chart-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+.chart-canvas-wrap { position: relative; width: 100%; }
+.chart-note { font-size: 11px; color: #AAB0C0; margin-top: 12px; font-style: italic; }
+.chart-legend-manual { display: flex; flex-direction: column; gap: 14px; }
+.clm-item { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text); }
+.clm-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+.clm-note { font-size: 11px; color: #AAB0C0; margin-top: 4px; font-style: italic; }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo"><img src="UTMN_logo_rus.png" style="height:36px;filter:brightness(0) invert(1);vertical-align:middle;margin-right:10px;">НП<span>·</span>ТюмГУ</div>
+  <div class="nav-logo">НП<span>·</span>ТюмГУ</div>
   <div class="nav-links">
     <button class="nav-btn active" onclick="show('home', this)">Главная</button>
     <button class="nav-btn" onclick="show('relevance', this)">Актуальность</button>
@@ -596,44 +615,81 @@ footer {
     <h2 class="section-title">Что показало исследование</h2>
 
     <p class="results-intro">
-      Ниже представлены данные нашего опроса студентов ТюмГУ в сравнении с общероссийскими данными ВЦИОМ. Итоговые инфографики будут добавлены после завершения обработки результатов.
+      Сравнительный анализ данных опроса студентов ТюмГУ и общероссийских показателей ВЦИОМ (декабрь 2024). Предварительные данные, N = 6.
     </p>
 
     <div class="results-metrics">
       <div class="metric-card">
-        <div class="metric-val">150<span>+</span></div>
-        <div class="metric-lbl">студентов-респондентов</div>
+        <div class="metric-val">6</div>
+        <div class="metric-lbl">респондентов (предв.)</div>
       </div>
       <div class="metric-card">
-        <div class="metric-val">2<span>+</span></div>
-        <div class="metric-lbl">отчёта ВЦИОМ проанализировано</div>
+        <div class="metric-val">83<span>%</span></div>
+        <div class="metric-lbl">осведомлённость ТюмГУ</div>
       </div>
       <div class="metric-card">
-        <div class="metric-val">3<span>+</span></div>
-        <div class="metric-lbl">сравнительных инфографики</div>
+        <div class="metric-val">73<span>%</span></div>
+        <div class="metric-lbl">осведомлённость по РФ</div>
       </div>
       <div class="metric-card">
-        <div class="metric-val">7–10</div>
-        <div class="metric-lbl">вопросов в анкете</div>
+        <div class="metric-val">87<span>%</span></div>
+        <div class="metric-lbl">оценили эффект позитивно</div>
       </div>
     </div>
 
-    <div class="placeholder-block">
-      <div class="placeholder-icon">📈</div>
-      <div class="placeholder-title">График 1: Осведомлённость о нацпроектах — ТюмГУ vs РФ</div>
-      <div class="placeholder-sub">Сюда вставить диаграмму из результатов опроса</div>
+    <!-- Chart 1 -->
+    <div class="chart-block">
+      <div class="chart-header">
+        <div class="chart-eyebrow">График 1</div>
+        <div class="chart-title">Уровень осведомлённости о нацпроектах</div>
+        <div class="chart-sub">Студенты ТюмГУ vs Россия в целом (ВЦИОМ, 2024), %</div>
+      </div>
+      <div class="chart-canvas-wrap" style="height:220px">
+        <canvas id="chart1"></canvas>
+      </div>
+      <div class="chart-note">* Предварительные данные ТюмГУ, N=6. Цель опроса — N ≥ 150.</div>
     </div>
 
-    <div class="placeholder-block">
-      <div class="placeholder-icon">📊</div>
-      <div class="placeholder-title">График 2: Какие нацпроекты знают студенты?</div>
-      <div class="placeholder-sub">Рейтинг нацпроектов по узнаваемости среди студентов ТюмГУ</div>
+    <!-- Chart 2 -->
+    <div class="chart-block">
+      <div class="chart-header">
+        <div class="chart-eyebrow">График 2</div>
+        <div class="chart-title">Узнаваемость национальных проектов</div>
+        <div class="chart-sub">Доля знающих о каждом проекте, % — ТюмГУ vs ВЦИОМ</div>
+      </div>
+      <div class="chart-canvas-wrap" style="height:380px">
+        <canvas id="chart2"></canvas>
+      </div>
+      <div class="chart-note">Источник данных РФ: ВЦИОМ, аналитический обзор «Национальные проекты — 2024»</div>
     </div>
 
-    <div class="placeholder-block">
-      <div class="placeholder-icon">🔄</div>
-      <div class="placeholder-title">График 3: Сравнительная инфографика ВЦИОМ vs ТюмГУ</div>
-      <div class="placeholder-sub">Детальное сопоставление показателей</div>
+    <!-- Chart 3 -->
+    <div class="chart-block">
+      <div class="chart-header">
+        <div class="chart-eyebrow">График 3</div>
+        <div class="chart-title">Уровень осведомлённости студентов ТюмГУ</div>
+        <div class="chart-sub">Распределение ответов на вопрос «Знаете ли вы о нацпроектах?», %</div>
+      </div>
+      <div style="display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+        <div class="chart-canvas-wrap" style="height:260px;flex:0 0 260px">
+          <canvas id="chart3"></canvas>
+        </div>
+        <div class="chart-legend-manual">
+          <div class="clm-item">
+            <div class="clm-dot" style="background:var(--navy)"></div>
+            <div><strong>50%</strong> — Знаю хорошо (3 чел.)</div>
+          </div>
+          <div class="clm-item">
+            <div class="clm-dot" style="background:var(--navy-light)"></div>
+            <div><strong>33%</strong> — Что-то слышал (2 чел.)</div>
+          </div>
+          <div class="clm-item">
+            <div class="clm-dot" style="background:var(--accent)"></div>
+            <div><strong>17%</strong> — Слышу впервые (1 чел.)</div>
+          </div>
+          <div class="clm-note">Предварительные данные, N=6</div>
+        </div>
+      </div>
     </div>
 
     <div class="vciom-block">
@@ -644,12 +700,12 @@ footer {
           <div class="vciom-stat-label">россиян знают о нацпроектах в целом</div>
         </div>
         <div>
-          <div class="vciom-stat-num">−11…15<sub>п.п.</sub></div>
-          <div class="vciom-stat-label">разрыв у молодёжи 18–24 лет</div>
+          <div class="vciom-stat-num">77<sub>%</sub></div>
+          <div class="vciom-stat-label">знают «Демографию» — самый узнаваемый</div>
         </div>
         <div>
-          <div class="vciom-stat-num">7<sub>из 10</sub></div>
-          <div class="vciom-stat-label">россиян, по данным ВЦИОМ, осведомлены о нацпроектах</div>
+          <div class="vciom-stat-num">−11…15<sub>п.п.</sub></div>
+          <div class="vciom-stat-label">разрыв у молодёжи 18–24 лет</div>
         </div>
       </div>
     </div>
@@ -714,6 +770,94 @@ function show(id, btn) {
   if (btn) btn.classList.add('active');
   window.scrollTo(0, 0);
 }
+
+Chart.defaults.font.family = "'Montserrat', sans-serif";
+Chart.defaults.color = '#5A6070';
+
+const NAVY = '#0D2340', NAVY2 = '#1A3A5C', NAVY3 = '#2A527A', RED = '#E8303A', LIGHT = '#E8F0FA', RED_LIGHT = '#FDE8E9';
+
+// Chart 1: Grouped bar — awareness comparison
+new Chart(document.getElementById('chart1'), {
+  type: 'bar',
+  data: {
+    labels: ['Студенты ТюмГУ (предв., N=6)', 'Россия в целом (ВЦИОМ, 2024)'],
+    datasets: [{
+      label: 'Осведомлённость, %',
+      data: [83, 73],
+      backgroundColor: [RED, NAVY2],
+      borderRadius: 6,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw}%` } }
+    },
+    scales: {
+      x: { min: 0, max: 100, grid: { color: '#EEF1F7' }, ticks: { callback: v => v + '%' } },
+      y: { grid: { display: false }, ticks: { font: { weight: '600', size: 13 } } }
+    }
+  }
+});
+
+// Chart 2: Horizontal grouped bar — projects awareness
+const projects = [
+  { label: 'Демография',              tgm: 67, rf: 77 },
+  { label: 'Образование',             tgm: 67, rf: 62 },
+  { label: 'Здравоохранение',         tgm: 50, rf: 74 },
+  { label: 'Цифровая экономика',      tgm: 50, rf: 48 },
+  { label: 'Безопасные дороги',       tgm: 33, rf: 55 },
+  { label: 'Жильё и городская среда', tgm: 33, rf: 51 },
+  { label: 'Туризм',                  tgm: 33, rf: 40 },
+  { label: 'Наука и университеты',    tgm: 17, rf: 38 },
+];
+new Chart(document.getElementById('chart2'), {
+  type: 'bar',
+  data: {
+    labels: projects.map(p => p.label),
+    datasets: [
+      { label: 'ТюмГУ (предв., N=6)', data: projects.map(p => p.tgm), backgroundColor: RED, borderRadius: 4, borderSkipped: false },
+      { label: 'Россия (ВЦИОМ 2024)', data: projects.map(p => p.rf), backgroundColor: NAVY2, borderRadius: 4, borderSkipped: false },
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 16, font: { size: 12 } } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}%` } }
+    },
+    scales: {
+      x: { min: 0, max: 100, grid: { color: '#EEF1F7' }, ticks: { callback: v => v + '%', font: { size: 11 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 12 } } }
+    }
+  }
+});
+
+// Chart 3: Doughnut — awareness levels TyumGU
+new Chart(document.getElementById('chart3'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Знаю хорошо', 'Что-то слышал', 'Слышу впервые'],
+    datasets: [{
+      data: [50, 33, 17],
+      backgroundColor: [NAVY, NAVY3, RED],
+      borderWidth: 0,
+      hoverOffset: 8,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw}%` } }
+    }
+  }
+});
 </script>
 </body>
 </html>
