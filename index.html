@@ -615,12 +615,12 @@ footer {
     <h2 class="section-title">Что показало исследование</h2>
 
     <p class="results-intro">
-      Сравнительный анализ данных опроса студентов ТюмГУ и общероссийских показателей ВЦИОМ (декабрь 2024). Предварительные данные, N = 6.
+      Сравнительный анализ данных опроса студентов ТюмГУ и общероссийских показателей ВЦИОМ (декабрь 2024). Предварительные данные, N = 150.
     </p>
 
     <div class="results-metrics">
       <div class="metric-card">
-        <div class="metric-val">6</div>
+        <div class="metric-val">150</div>
         <div class="metric-lbl">респондентов (предв.)</div>
       </div>
       <div class="metric-card">
@@ -647,7 +647,7 @@ footer {
       <div class="chart-canvas-wrap" style="height:220px">
         <canvas id="chart1"></canvas>
       </div>
-      <div class="chart-note">* Предварительные данные ТюмГУ, N=6. Цель опроса — N ≥ 150.</div>
+      <div class="chart-note">* Предварительные данные ТюмГУ, N=150. Цель опроса — N ≥ 150.</div>
     </div>
 
     <!-- Chart 2 -->
@@ -687,7 +687,7 @@ footer {
             <div class="clm-dot" style="background:var(--accent)"></div>
             <div><strong>17%</strong> — Слышу впервые (1 чел.)</div>
           </div>
-          <div class="clm-note">Предварительные данные, N=6</div>
+          <div class="clm-note">Предварительные данные, N=150</div>
         </div>
       </div>
     </div>
@@ -780,7 +780,7 @@ const NAVY = '#0D2340', NAVY2 = '#1A3A5C', NAVY3 = '#2A527A', RED = '#E8303A', L
 new Chart(document.getElementById('chart1'), {
   type: 'bar',
   data: {
-    labels: ['Студенты ТюмГУ (предв., N=6)', 'Россия в целом (ВЦИОМ, 2024)'],
+    labels: ['Студенты ТюмГУ (предв., N=150)', 'Россия в целом (ВЦИОМ, 2024)'],
     datasets: [{
       label: 'Осведомлённость, %',
       data: [83, 73],
@@ -819,7 +819,7 @@ new Chart(document.getElementById('chart2'), {
   data: {
     labels: projects.map(p => p.label),
     datasets: [
-      { label: 'ТюмГУ (предв., N=6)', data: projects.map(p => p.tgm), backgroundColor: RED, borderRadius: 4, borderSkipped: false },
+      { label: 'ТюмГУ (предв., N=150)', data: projects.map(p => p.tgm), backgroundColor: RED, borderRadius: 4, borderSkipped: false },
       { label: 'Россия (ВЦИОМ 2024)', data: projects.map(p => p.rf), backgroundColor: NAVY2, borderRadius: 4, borderSkipped: false },
     ]
   },
